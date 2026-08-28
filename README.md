@@ -1,10 +1,14 @@
-# Grok Bot for Datadog GTM
+# Epiq x SpaceXAI
 
-Passworded site. Grok Bot from SpaceXAI, for Datadog GTM.
+Passworded customer leave-behind with three illustrative Grok Bot workflows for Epiq GTM.
 
-## What it is
+## Stack
 
-Three GTM jobs on one page. Each job has a short problem statement, an interactive Grok Bot demo, and the matching Krista Letz clips under that demo. Below that: a light index of the clips and the public Grok Bot quote wall.
+- Next.js 15.5
+- React 19
+- Geist
+- vGPU
+- App Router under `src/`
 
 ## Run locally
 
@@ -14,18 +18,8 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Default password is `land2expand` (override with `SITE_PASSWORD`).
-
-## Krista clips
-
-Download into `private/media/krista-clips/` from the GitHub release (served only through the passworded `/api/media/...` route):
-
-```bash
-gh release download krista-gtm-clips-720p-2026-08-26 \
-  --repo Speediing/grok-bot-quotes \
-  --dir private/media/krista-clips
-```
+Open [http://localhost:3000](http://localhost:3000). The local example password is `land2expand`. Production requires `SITE_PASSWORD`.
 
 ## Deploy
 
-Preview only under the `jasonwiker` Vercel team, project name `datadog-cro`. Set `SITE_PASSWORD=land2expand`. Do not promote to a public production domain until Jason says so.
+Deploy the production site to the `jasonwiker` Vercel scope and set `SITE_PASSWORD` in the project environment.

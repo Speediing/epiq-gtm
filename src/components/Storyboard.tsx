@@ -192,8 +192,8 @@ function LiveVisual({ visual }: { visual: StoryVisual }) {
             </p>
           </div>
           <footer>
-            <strong>{visual.questions}</strong>
-            questions need answers
+            <strong>New</strong>
+            {visual.detail}
           </footer>
         </div>
       );

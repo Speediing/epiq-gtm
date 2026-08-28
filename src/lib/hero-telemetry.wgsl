@@ -38,18 +38,15 @@ fn hash21(p: vec2f) -> f32 {
   return fract(sin(dot(p, vec2f(127.1, 311.7))) * 43758.5453);
 }
 
-fn datadogMark(p: vec2f) -> f32 {
-  let q = rotate(p, -0.14);
-  let plate = sdRoundedBox(q, vec2f(0.20, 0.20), 0.055);
-  let head = sdEllipse(q - vec2f(0.0, -0.01), vec2f(0.105, 0.125));
-  let ear = sdEllipse(rotate(q - vec2f(-0.07, -0.10), 0.5), vec2f(0.055, 0.085));
-  let snout = sdEllipse(q - vec2f(0.10, 0.04), vec2f(0.08, 0.055));
-  let body = opSmoothUnion(opSmoothUnion(head, ear, 0.03), snout, 0.04);
-  var mark = opSmoothSub(plate, body, 0.012);
-  let screen = sdRoundedBox(q - vec2f(0.07, 0.11), vec2f(0.075, 0.055), 0.01);
-  let bezel = sdRoundedBox(q - vec2f(0.07, 0.11), vec2f(0.088, 0.068), 0.014);
-  mark = opSmoothUnion(mark, bezel, 0.01);
-  mark = opSmoothSub(mark, screen, 0.008);
+fn agentComputer(p: vec2f) -> f32 {
+  let q = rotate(p, -0.04);
+  let bezel = sdRoundedBox(q, vec2f(0.14, 0.095), 0.018);
+  let screen = sdRoundedBox(q, vec2f(0.118, 0.072), 0.01);
+  let stand = sdRoundedBox(q - vec2f(0.0, 0.125), vec2f(0.038, 0.026), 0.008);
+  let foot = sdRoundedBox(q - vec2f(0.0, 0.153), vec2f(0.085, 0.008), 0.004);
+  var mark = opSmoothUnion(bezel, stand, 0.012);
+  mark = opSmoothUnion(mark, foot, 0.006);
+  mark = opSmoothSub(mark, screen, 0.006);
   return mark;
 }
 
@@ -78,24 +75,28 @@ fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   let p = (uv - vec2f(0.5)) * vec2f(aspect, 1.0);
   let t = params.time;
 
-  let breathe = 1.0 + 0.02 * sin(t * 0.85);
-  let dogP = (p - vec2f(0.46, -0.12)) / breathe;
-  let dDog = datadogMark(dogP);
-  let fill = 1.0 - smoothstep(-0.0015, 0.004, dDog);
-  let line = 1.0 - smoothstep(0.0, 0.0055, abs(dDog));
-  let glow = exp(-max(dDog, 0.0) * 16.0);
+  let breathe = 1.0 + 0.018 * sin(t * 0.85);
+  let markA = agentComputer((p - vec2f(0.44, -0.20)) / breathe);
+  let markB = agentComputer((p - vec2f(0.25, 0.08)) / breathe);
+  let markC = agentComputer((p - vec2f(0.56, 0.22)) / breathe);
+  let marks = min(markA, min(markB, markC));
+  let fill = 1.0 - smoothstep(-0.0015, 0.004, marks);
+  let line = 1.0 - smoothstep(0.0, 0.0055, abs(marks));
+  let glow = exp(-max(marks, 0.0) * 16.0);
 
   let traces = ribbons(p, t);
   let cell = floor(uv * vec2f(32.0, 18.0));
   let h = hash21(cell);
   let spark = step(0.972, h) * (0.45 + 0.55 * sin(t * 1.8 + h * 40.0));
 
-  let purple = vec3f(0.388235, 0.172549, 0.650980);
+  let teal = vec3f(0.196078, 0.690196, 0.623529);
+  let blue = vec3f(0.0, 0.356863, 0.560784);
   let paper = vec3f(0.960784, 0.945098, 0.909804);
   let leftClear = smoothstep(0.34, 0.62, uv.x);
   var a = fill * 0.08 + line * 0.28 + glow * 0.08 + traces * 0.32 + spark * 0.06;
   a *= 0.55 * leftClear;
   a = clamp(a, 0.0, 0.34);
-  let col = mix(purple, paper, spark * 0.45 + line * 0.05);
+  let col = mix(teal, blue, smoothstep(0.38, 0.82, uv.x));
+  col = mix(col, paper, spark * 0.45 + line * 0.05);
   return vec4f(col * a, a);
 }

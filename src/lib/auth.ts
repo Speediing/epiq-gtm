@@ -1,7 +1,8 @@
-export const AUTH_COOKIE = "datadog_cro_session";
+export const AUTH_COOKIE = "epiq_gtm_session";
 
 export function sitePassword(): string {
-  return process.env.SITE_PASSWORD || "land2expand";
+  if (process.env.SITE_PASSWORD) return process.env.SITE_PASSWORD;
+  return process.env.NODE_ENV === "production" ? "" : "land2expand";
 }
 
 function toHex(buffer: ArrayBuffer): string {
@@ -13,7 +14,7 @@ function toHex(buffer: ArrayBuffer): string {
 export async function sessionToken(
   password: string = sitePassword(),
 ): Promise<string> {
-  const data = new TextEncoder().encode(`datadog-cro:${password}`);
+  const data = new TextEncoder().encode(`epiq-gtm:${password}`);
   const digest = await crypto.subtle.digest("SHA-256", data);
   return toHex(digest);
 }

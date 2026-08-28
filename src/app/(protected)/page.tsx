@@ -1,7 +1,7 @@
 import { CompareTable } from "@/components/CompareTable";
 import { HeroTelemetry } from "@/components/HeroTelemetry";
 import { JobSection } from "@/components/JobSection";
-import { QuoteWall } from "@/components/QuoteWall";
+import { RosterChart } from "@/components/RosterChart";
 import { SiteNav } from "@/components/SiteNav";
 import { JOBS } from "@/data/jobs";
 
@@ -12,10 +12,15 @@ export default function HomePage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="hero-watercolor-image"
-          src="/brand/watercolor-pad.png"
+          src="/brand/epiq-watercolor-header.png"
           alt=""
         />
         <SiteNav />
+        <div className="hero-paper-pin">
+          <p>Epiq x SpaceXAI</p>
+          <strong>A working agent team for Epiq GTM</strong>
+          <span>Plans work. Opens tools. Returns finished drafts.</span>
+        </div>
       </div>
 
       <div className="report">
@@ -23,24 +28,25 @@ export default function HomePage() {
           <HeroTelemetry />
           <section className="hero">
             <div>
-              <p className="eyebrow">A proactive agent for every Datadog rep</p>
-              <h1>The agents that work while your reps sell.</h1>
+              <p className="eyebrow">A working agent team for Epiq sellers</p>
+              <h1>The follow-up is ready before the day moves on.</h1>
               <p className="hero-intro">
-                Grok Bot listens to calls, watches the inbox, and researches
-                accounts in the background. Work triggers it — not another
-                prompt.
+                Grok Bot watches for the work around a sale, opens the right
+                tools on its own computer, and brings back a draft for you to
+                check. You stay in control of anything that gets sent.
               </p>
             </div>
           </section>
 
           <section className="usecase-framing">
-            <p className="eyebrow">Three sample use cases</p>
+            <p className="eyebrow">Three illustrative use cases</p>
             <h2>
-              Grok Bot gives every seller their own fleet of always-available
-              agent teammates. Anything your sellers do today can be done
-              through Grok Bot.
+              Start with three moments that can eat a seller&apos;s week.
             </h2>
-            <p>These are three examples from millions — not the boundary.</p>
+            <p>
+              These are proposed workflows, not claims about Epiq&apos;s current
+              process.
+            </p>
           </section>
 
           <div className="metric-grid">
@@ -58,6 +64,7 @@ export default function HomePage() {
               </a>
             ))}
           </div>
+          <RosterChart />
         </div>
 
         <div id="jobs">
@@ -69,24 +76,23 @@ export default function HomePage() {
 
       <div className="orbit-break" aria-hidden>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/brand/watercolor-orbit.png" alt="" />
+        <img src="/brand/epiq-watercolor-header.png" alt="" />
       </div>
 
       <div className="report">
         <CompareTable />
-        <QuoteWall />
       </div>
 
       <footer className="site-footer">
         <div>
-          <p className="footer-title">Cursor for Datadog</p>
-          <p>Grok Bot for Datadog sales</p>
+          <p className="footer-title">Epiq x SpaceXAI</p>
+          <p>Illustrative Grok Bot workflows for Epiq GTM</p>
         </div>
         <address className="footer-contact">
-          <p>Datadog&apos;s existing Cursor contact</p>
-          <strong>Madeline Ingleby</strong>
-          <a href="mailto:madeline.ingleby@cursor.com">
-            madeline.ingleby@cursor.com
+          <p>Your Cursor contact</p>
+          <strong>Griffin Hewitt</strong>
+          <a href="mailto:griffin.hewitt@cursor.com">
+            griffin.hewitt@cursor.com
           </a>
         </address>
       </footer>
