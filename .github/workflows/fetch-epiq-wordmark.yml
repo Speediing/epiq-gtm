@@ -1,0 +1,73 @@
+name: Fetch official Epiq wordmark
+
+on:
+  push:
+    branches:
+      - cursor/datadog-cro-template
+    paths:
+      - .github/workflows/fetch-epiq-wordmark.yml
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch official site
+        run: |
+          mkdir -p /tmp/epiq-assets
+          curl --fail --location \
+            --user-agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/126 Safari/537.36" \
+            https://www.epiqglobal.com/en-us \
+            --output /tmp/epiq-assets/home.html
+      - name: Find and download logo candidates
+        run: |
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import urljoin
+
+          class Assets(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.urls = []
+
+              def handle_starttag(self, tag, attrs):
+                  values = dict(attrs)
+                  haystack = " ".join(
+                      str(values.get(key, ""))
+                      for key in ("src", "href", "srcset", "alt", "class", "id")
+                  ).lower()
+                  if "logo" not in haystack and "epiq" not in haystack:
+                      return
+                  for key in ("src", "href"):
+                      value = values.get(key)
+                      if value and not value.startswith(("data:", "#")):
+                          self.urls.append(urljoin("https://www.epiqglobal.com/en-us", value))
+                  srcset = values.get("srcset", "")
+                  for item in srcset.split(","):
+                      value = item.strip().split(" ")[0]
+                      if value and not value.startswith("data:"):
+                          self.urls.append(urljoin("https://www.epiqglobal.com/en-us", value))
+
+          parser = Assets()
+          parser.feed(Path("/tmp/epiq-assets/home.html").read_text(errors="ignore"))
+          urls = list(dict.fromkeys(parser.urls))
+          Path("/tmp/epiq-assets/candidates.txt").write_text("\n".join(urls))
+          print("\n".join(urls))
+          PY
+
+          i=0
+          while IFS= read -r url; do
+            i=$((i + 1))
+            curl --fail --location \
+              --user-agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/126 Safari/537.36" \
+              "$url" \
+              --output "/tmp/epiq-assets/candidate-$i" || true
+          done < /tmp/epiq-assets/candidates.txt
+
+          file /tmp/epiq-assets/* > /tmp/epiq-assets/file-types.txt
+          cat /tmp/epiq-assets/file-types.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: official-epiq-wordmark-candidates
+          path: /tmp/epiq-assets
