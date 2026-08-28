@@ -10,6 +10,8 @@ Passworded customer leave-behind with three illustrative Grok Bot workflows for 
 - vGPU
 - App Router under `src/`
 
+The Epiq wordmark is the official asset served by [epiqglobal.com](https://www.epiqglobal.com/epiq/media/logos/epiq_logo_techblue-5.png).
+
 ## Run locally
 
 ```bash

@@ -8,7 +8,7 @@ export function BrandLockup({
     <div className={`brand-lockup brand-lockup-${size}`}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/brand/epiq-wordmark.svg"
+        src="/brand/epiq-wordmark.png"
         alt="Epiq"
         className="brand-epiq"
       />
