@@ -57,8 +57,8 @@ export default function HomePage() {
         <address className="footer-contact">
           <p>Your Cursor contact</p>
           <strong>Griffin Hewitt</strong>
-          <a href="mailto:griffin.hewitt@cursor.com">
-            griffin.hewitt@cursor.com
+          <a href="mailto:griffin.hewitt@cursdor.com">
+            griffin.hewitt@cursdor.com
           </a>
         </address>
       </footer>
