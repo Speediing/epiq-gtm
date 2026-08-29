@@ -22,7 +22,7 @@ export async function sessionToken(
 export async function isValidSession(
   token: string | undefined | null,
 ): Promise<boolean> {
-  if (!token) return false;
+  if (!token || !sitePassword()) return false;
   const expected = await sessionToken();
   if (token.length !== expected.length) return false;
   let mismatch = 0;
@@ -34,6 +34,7 @@ export async function isValidSession(
 
 export function passwordMatches(input: string): boolean {
   const expected = sitePassword();
+  if (!expected) return false;
   if (input.length !== expected.length) return false;
   let mismatch = 0;
   for (let i = 0; i < input.length; i += 1) {
